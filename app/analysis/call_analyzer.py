@@ -91,6 +91,27 @@ def analyze_call_data(file_path: str) -> Dict[str, Any]:
         for shift in section_shifts:
             shift_counts_non_repetitive[shift] += calls_per_shift
     
+    # Count calls by hour of the day (New requirement - point 6)
+    hourly_counts = {}
+    
+    # Initialize all hours with zero counts
+    for hour in range(1, 13):
+        hourly_counts[f"{hour} AM"] = 0
+        hourly_counts[f"{hour} PM"] = 0
+    
+    # Count calls for each hour
+    for _, row in df.iterrows():
+        hour = row['StartTime'].hour
+        am_pm = "AM" if hour < 12 else "PM"
+        
+        # Convert to 12-hour format
+        hour_12 = hour % 12
+        if hour_12 == 0:
+            hour_12 = 12
+            
+        key = f"{hour_12} {am_pm}"
+        hourly_counts[key] += 1
+    
     # Prepare the results dictionary
     resource_counts_result = {}
     for section, count in resource_counts.items():
@@ -108,7 +129,8 @@ def analyze_call_data(file_path: str) -> Dict[str, Any]:
     results = {
         "shift_counts": shift_counts,
         "resource_counts": resource_counts_result,
-        "non_repetitive_counts": non_repetitive_counts_result
+        "non_repetitive_counts": non_repetitive_counts_result,
+        "hourly_counts": hourly_counts
     }
     
     return results
