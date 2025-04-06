@@ -44,6 +44,12 @@ async def upload_and_analyze(file: UploadFile = File(...)):
             "result": result
         }
     except Exception as e:
+        # Log the error for backend debugging
+        import traceback
+        error_details = traceback.format_exc()
+        print(f"Analysis error: {str(e)}\n{error_details}")
+        
+        # Return more useful error information
         raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
     finally:
         # Clean up the temporary file
