@@ -26,17 +26,16 @@ def analyze_call_data(file_path: str) -> Dict[str, Any]:
     shifts = {
         "Shift 1": (datetime.time(5, 0), datetime.time(14, 0)),  # 5 AM - 2 PM
         "Shift 2": (datetime.time(9, 0), datetime.time(18, 0)),  # 9 AM - 6 PM
-        "Shift 3": (datetime.time(11, 0), datetime.time(20, 0)), # 11 AM - 8 PM
-        "Shift 4": (datetime.time(18, 0), datetime.time(5, 0))   # 6 PM - 5 AM (crosses midnight)
+        "Shift 3": (datetime.time(18, 0), datetime.time(5, 0))   # 6 PM - 5 AM (crosses midnight)
     }
     
     # Define resource distribution time sections and the number of resources in each
     resource_distribution = {
         "5 AM - 9 AM": {"start": datetime.time(5, 0), "end": datetime.time(9, 0), "resources": 1},
         "9 AM - 11 AM": {"start": datetime.time(9, 0), "end": datetime.time(11, 0), "resources": 2},
-        "11 AM - 2 PM": {"start": datetime.time(11, 0), "end": datetime.time(14, 0), "resources": 3},
-        "2 PM - 6 PM": {"start": datetime.time(14, 0), "end": datetime.time(18, 0), "resources": 2},
-        "6 PM - 8 PM": {"start": datetime.time(18, 0), "end": datetime.time(20, 0), "resources": 2},
+        "11 AM - 2 PM": {"start": datetime.time(11, 0), "end": datetime.time(14, 0), "resources": 2},
+        "2 PM - 6 PM": {"start": datetime.time(14, 0), "end": datetime.time(18, 0), "resources": 1},
+        "6 PM - 8 PM": {"start": datetime.time(18, 0), "end": datetime.time(20, 0), "resources": 1},
         "8 PM - 5 AM": {"start": datetime.time(20, 0), "end": datetime.time(5, 0), "resources": 1}
     }
     
@@ -44,10 +43,10 @@ def analyze_call_data(file_path: str) -> Dict[str, Any]:
     time_sections_shifts = {
         "5 AM - 9 AM": ["Shift 1"],
         "9 AM - 11 AM": ["Shift 1", "Shift 2"],
-        "11 AM - 2 PM": ["Shift 1", "Shift 2", "Shift 3"],
-        "2 PM - 6 PM": ["Shift 2", "Shift 3"],
-        "6 PM - 8 PM": ["Shift 3", "Shift 4"],
-        "8 PM - 5 AM": ["Shift 4"]
+        "11 AM - 2 PM": ["Shift 1", "Shift 2"],
+        "2 PM - 6 PM": ["Shift 2"],
+        "6 PM - 8 PM": ["Shift 3"],
+        "8 PM - 5 AM": ["Shift 3"]
     }
     
     # Count calls in each shift
